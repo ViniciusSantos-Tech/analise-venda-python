@@ -6,8 +6,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from time import sleep
 service = Service(ChromeDriverManager().install())
+import pandas as pd
+import customtkinter as ctk
 Preço1atual = 5899
-Preço2atual = 4169
+Preço2atual = 3749
 Preço3atual = 1619
 Preço1limpo = 0
 Preço2limpo = 0
@@ -21,11 +23,15 @@ preço3 = ''
 
 def menuzinho():
     print("--VALORES---")
-    print(f"Loja {Loja1}: R${Preço1} ")
-    print(f"Loja {Loja2}: R${preço2}")
-    print(f"Loja {Loja3}: R${preço3}")
+    print1 = print(f"Loja {Loja1}: R${Preço1} ")
+    print2 = print(f"Loja {Loja2}: R${preço2}")
+    print3 = print(f"Loja {Loja3}: R${preço3}")
+    label1inv.configure(text=f'Loja {Loja1}: R${Preço1}')
+    label2inv.configure(text=f'Loja {Loja2}: R${preço2}')
+    label3inv.configure(text=f'Loja {Loja3}: R${preço3}')
 
 def Alarme():
+
     global Preço1atual, Preço2atual, Preço3atual
     preços = [Preço1limpo, Preço2limpo, Preço3limpo]
     if preços[0] < Preço1atual:
@@ -70,7 +76,7 @@ def verificar_todos_sites():
 
     while True:
         try:
-            driver.get("https://www.americanas.com.br/geladeira-refrigerador-compacto-hq-defrost-140-litros-preto-inox-hq-140rdf-7514478991/p?idsku=3790963")
+            driver.get("https://www.americanas.com.br/geladeira-electrolux-frost-free-inverter-409l-agua-na-porta-com-autosense-duplex-inox-look-iw46s-7515385163/p?idsku=7134272&utm_source=YSMESP&utm_medium=buscappc&utm_campaign=alwayson-25&utm_content=bp_pl_sh_go_digital_aloc_shopping_na_alwayson-25_eletrodomesticos_aon25-00301&utm_term=pla_shopping&gad_source=1&gad_campaignid=22882470944&gbraid=0AAAAAD37VppYKYvUjB8ddX_BBNjMLs0Ja&gclid=CjwKCAiAw9vIBhBBEiwAraSATmmQ6rtletDBd1TOwV0kpdXauruot1fsHixCzMBvp9K5Vd4pCAImchoC9pEQAvD_BwE")
             sleep(1)
             Loja3 = 'Americanas'
             preço3 = driver.find_element(By.CSS_SELECTOR, '.ProductPrice_productPrice__vpgdo').text
@@ -79,8 +85,27 @@ def verificar_todos_sites():
             break
         except:
             print("Error site3")
+    Alarme()
     
     driver.quit() 
-    Alarme()
 
-verificar_todos_sites()
+
+
+tela = ctk.CTk()
+ctk.set_appearance_mode('white')
+tela.geometry('400x400')
+tela.resizable(False, False)
+Label = ctk.CTkLabel(tela, text='PREÇOS LOJAS')
+Label.pack(padx=10)
+Butao = ctk.CTkButton(tela, text='Clique aqui', command=verificar_todos_sites)
+Butao.pack(padx=20)
+label1inv = ctk.CTkLabel(tela, text="")
+label1inv.pack(padx=10)
+
+label2inv = ctk.CTkLabel(tela, text="")
+label2inv.pack(padx=10)
+
+label3inv = ctk.CTkLabel(tela, text="")
+label3inv.pack(padx=10)
+
+tela.mainloop()
